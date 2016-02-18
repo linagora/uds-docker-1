@@ -24,7 +24,6 @@
       .red { color: #fa0000; }
       .large { font-size: 2em; }
       a, a > code {
-://cdn-images-1.medium.com/max/800/1*E8KZJNl21-f1Fb93zgwPWA.jpeg--
         color: rgb(249, 38, 114);
         text-decoration: none;
       }
@@ -484,6 +483,77 @@ root@9daf2c9d55d0:/# dpkg -l |grep vim
 ii  vim                      2:7.3.547-7              amd64        Vi IMproved - enhanced vi editor
 ii  vim-common               2:7.3.547-7              amd64        Vi IMproved - Common files
 ii  vim-runtime              2:7.3.547-7              all          Vi IMproved - Runtime files
+```
+]
+---
+layout: false
+# Un peu plus loin
+.left-column[
+## Les données
+## Images 1
+]
+.right-column[
+
+### Listons nos images
+```.bash
+$ docker images
+[...]
+first                        latest              1020201b7049        44 minutes ago      163.4 MB
+debian                       jessie              256adf7015ca        38 hours ago        125.1 MB
+[...]
+```
+### Supprimons une image
+```.bash
+$ docker rmi first
+Failed to remove image (first): Error response from daemon: conflict: unable to remove repository reference "first" (must force) - container 82c19b3a90a9 is using its referenced image 1020201b7049
+```
+]
+---
+layout: false
+# Un peu plus loin
+.left-column[
+## Les données
+## Images 1
+## Images 2
+]
+.right-column[
+
+## Un conteneur doit d'abord être supprimé
+```.bash
+$ docker ps -a | grep 82c19b3a90a9
+82c19b3a90a9        first                    "/bin/bash"              46 minutes ag  o      Exited (0) 46 minutes ago                         focused_lumiere
+$ docker rm 82c19b3a90a9
+82c19b3a90a9
+```
+
+## Sinon, on peut forcer la suppression
+
+```.bash
+$ docker rmi -f first
+Untagged: first:latest
+Deleted: sha256:1020201b7049d8ef1294be2851d04f561248cc4506e7aa1e67791afc4f68772a
+``` 
+]
+---
+layout: false
+# Un peu plus loin
+.left-column[
+## Les données
+## Images 1
+## Images 2
+## Les volumes
+]
+.right-column[
+
+## On peut connecter un volume à un conteneur
+```.bash
+$ docker run -v ${PWD}/data:/target-ti centos:6
+```
+
+## Les données sont persistées sur disque indépendamment du conteneur
+
+```.bash
+$ ls data
 ```
 ]
 ---
